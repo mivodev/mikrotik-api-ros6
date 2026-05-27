@@ -1,7 +1,6 @@
 {
     "name": "mivodev/mikrotik-api-ros6",
     "description": "Complete, universal PHP client for Mikrotik RouterOS v6 API (Socket Protocol Port 8728). Framework-agnostic, zero-dependency.",
-    "version": "0.1.0-dev",
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/mivodev/mikrotik-api-ros6",
@@ -22,7 +21,8 @@
     ],
     "authors": [
         {
-            "name": "Mivodev",
+            "name": "Mivo Enterprise",
+            "email": "mivo@dev.dyzulk.com",
             "homepage": "https://github.com/mivodev",
             "role": "Developer"
         }
