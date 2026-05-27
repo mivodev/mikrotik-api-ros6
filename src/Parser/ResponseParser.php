@@ -35,9 +35,8 @@ class ResponseParser
      *   ]
      *
      * @param  array<int,string>  $response  Raw words from the socket response.
-     *
-     * @return array<int|string,mixed>  Parsed response. Numeric keys for !re rows,
-     *                                   '!trap' key for error data, '!fatal' key for fatal data.
+     * @return array<int|string,mixed> Parsed response. Numeric keys for !re rows,
+     *                                 '!trap' key for error data, '!fatal' key for fatal data.
      */
     public static function parse(array $response): array
     {
@@ -102,8 +101,7 @@ class ResponseParser
      * Check if a parsed response contains a !trap error.
      *
      * @param  array<int|string,mixed>  $parsed  Output from parse().
-     *
-     * @return bool  True if the response contains error data.
+     * @return bool True if the response contains error data.
      */
     public static function hasTrap(array $parsed): bool
     {
@@ -114,8 +112,7 @@ class ResponseParser
      * Check if a parsed response contains a !fatal error.
      *
      * @param  array<int|string,mixed>  $parsed  Output from parse().
-     *
-     * @return bool  True if the response contains fatal error data.
+     * @return bool True if the response contains fatal error data.
      */
     public static function hasFatal(array $parsed): bool
     {
@@ -126,8 +123,7 @@ class ResponseParser
      * Extract the error message from a !trap response.
      *
      * @param  array<int|string,mixed>  $parsed  Output from parse().
-     *
-     * @return string|null  The error message, or null if no trap found.
+     * @return string|null The error message, or null if no trap found.
      */
     public static function getTrapMessage(array $parsed): ?string
     {

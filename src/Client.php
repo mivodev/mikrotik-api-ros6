@@ -91,7 +91,7 @@ class Client implements ClientInterface
             $this->connected = false;
 
             $protocol = $this->ssl ? 'ssl://' : '';
-            $address = $protocol . $host . ':' . $port;
+            $address = $protocol.$host.':'.$port;
 
             $this->debug("Connection attempt #{$attempt} to {$address}...");
 
@@ -207,8 +207,8 @@ class Client implements ClientInterface
     /**
      * Write a word to the socket, optionally ending the sentence.
      *
-     * @param  string  $command       The word to send.
-     * @param  bool    $endSentence   If true, append a null byte to end the sentence.
+     * @param  string  $command  The word to send.
+     * @param  bool  $endSentence  If true, append a null byte to end the sentence.
      *
      * @see routeros_api.class.php::write() (Mikhmon v3, lines 368-389)  Reference implementation
      */
@@ -236,8 +236,7 @@ class Client implements ClientInterface
      * Read a complete response from the socket (all sentences until !done).
      *
      * @param  bool  $parse  Whether to parse the response. Default: true.
-     *
-     * @return array  Parsed response (if $parse=true) or raw word array.
+     * @return array Parsed response (if $parse=true) or raw word array.
      *
      * @see routeros_api.class.php::read() (Mikhmon v3, lines 281-354)  Reference implementation
      */
@@ -283,7 +282,7 @@ class Client implements ClientInterface
     protected function debug(string $message): void
     {
         if ($this->debug) {
-            echo $message . "\n";
+            echo $message."\n";
         }
     }
 

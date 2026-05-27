@@ -31,20 +31,19 @@ class Authenticator
      * - If router responds with !done + =ret= token → MD5 challenge (pre-v6.43)
      * - If router responds with !done only → plaintext accepted (post-v6.43)
      *
-     * @param  resource  $socket    An open, connected socket resource.
-     * @param  string    $username  RouterOS username.
-     * @param  string    $password  RouterOS password.
+     * @param  resource  $socket  An open, connected socket resource.
+     * @param  string  $username  RouterOS username.
+     * @param  string  $password  RouterOS password.
+     * @return bool True if authentication succeeded.
      *
-     * @return bool  True if authentication succeeded.
-     *
-     * @throws MikrotikException  If authentication fails.
+     * @throws MikrotikException If authentication fails.
      */
     public static function authenticate($socket, string $username, string $password): bool
     {
         // Step 1: Send initial /login with credentials (post-v6.43 style)
         self::writeWord($socket, '/login');
-        self::writeWord($socket, '=name=' . $username);
-        self::writeWord($socket, '=password=' . $password);
+        self::writeWord($socket, '=name='.$username);
+        self::writeWord($socket, '=password='.$password);
         self::writeSentenceEnd($socket);
 
         // Step 2: Read the response
@@ -79,14 +78,13 @@ class Authenticator
      * Calculates: MD5( 0x00 + password + hex2bin(challenge_token) )
      * Then sends: /login, =name=..., =response=00<hash>
      *
-     * @param  resource  $socket     Open socket.
-     * @param  string    $username   RouterOS username.
-     * @param  string    $password   RouterOS password.
-     * @param  string    $challenge  32-char hex string from =ret= response.
+     * @param  resource  $socket  Open socket.
+     * @param  string  $username  RouterOS username.
+     * @param  string  $password  RouterOS password.
+     * @param  string  $challenge  32-char hex string from =ret= response.
+     * @return bool True if the challenge response was accepted.
      *
-     * @return bool  True if the challenge response was accepted.
-     *
-     * @throws MikrotikException  If authentication fails.
+     * @throws MikrotikException If authentication fails.
      *
      * @see https://wiki.mikrotik.com/wiki/Manual:API#Initial_login  MD5 challenge documentation
      */
@@ -97,11 +95,11 @@ class Authenticator
         string $challenge,
     ): bool {
         // Compute MD5: null byte + password + binary challenge
-        $hash = md5(chr(0) . $password . pack('H*', $challenge));
+        $hash = md5(chr(0).$password.pack('H*', $challenge));
 
         self::writeWord($socket, '/login');
-        self::writeWord($socket, '=name=' . $username);
-        self::writeWord($socket, '=response=00' . $hash);
+        self::writeWord($socket, '=name='.$username);
+        self::writeWord($socket, '=response=00'.$hash);
         self::writeSentenceEnd($socket);
 
         $response = self::readSentence($socket);
@@ -117,7 +115,7 @@ class Authenticator
      * Write a single encoded word to the socket.
      *
      * @param  resource  $socket  Open socket.
-     * @param  string    $word    Word to write.
+     * @param  string  $word  Word to write.
      */
     private static function writeWord($socket, string $word): void
     {
@@ -138,8 +136,7 @@ class Authenticator
      * Read a complete sentence (sequence of words until empty word) from the socket.
      *
      * @param  resource  $socket  Open socket.
-     *
-     * @return array<int,string>  Array of words in the sentence.
+     * @return array<int,string> Array of words in the sentence.
      */
     private static function readSentence($socket): array
     {

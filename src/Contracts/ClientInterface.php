@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Mivo\MikrotikRos6\Contracts;
 
+use Mivo\MikrotikRos6\Exceptions\MikrotikException;
+
 /**
  * Contract for Mikrotik RouterOS API clients.
  *
@@ -28,14 +30,13 @@ interface ClientInterface
     /**
      * Open a connection to the router and authenticate.
      *
-     * @param  string  $host      IP address or hostname of the router.
+     * @param  string  $host  IP address or hostname of the router.
      * @param  string  $username  RouterOS username (default: "admin").
      * @param  string  $password  RouterOS password (default: "").
-     * @param  int     $port      API port (default: 8728, or 8729 for SSL).
+     * @param  int  $port  API port (default: 8728, or 8729 for SSL).
+     * @return bool True if connection and authentication succeeded.
      *
-     * @return bool  True if connection and authentication succeeded.
-     *
-     * @throws \Mivo\MikrotikRos6\Exceptions\MikrotikException
+     * @throws MikrotikException
      */
     public function connect(string $host, string $username = 'admin', string $password = '', int $port = 8728): bool;
 
@@ -62,15 +63,14 @@ interface ClientInterface
      *   $client->comm('/queue/simple/print');
      *   $client->comm('/system/identity/print');
      *
-     * @param  string               $command  RouterOS command path.
-     * @param  array<string,string>  $params   Key-value pairs for command attributes and queries.
-     *                                         Prefix key with "?" for queries: ['?user' => 'test']
-     *                                         Prefix key with "~" for regex:   ['~name' => 'pattern']
-     *                                         No prefix for attributes:        ['name' => 'value']
+     * @param  string  $command  RouterOS command path.
+     * @param  array<string,string>  $params  Key-value pairs for command attributes and queries.
+     *                                        Prefix key with "?" for queries: ['?user' => 'test']
+     *                                        Prefix key with "~" for regex:   ['~name' => 'pattern']
+     *                                        No prefix for attributes:        ['name' => 'value']
+     * @return array<int,array<string,string>> Parsed response rows.
      *
-     * @return array<int,array<string,string>>  Parsed response rows.
-     *
-     * @throws \Mivo\MikrotikRos6\Exceptions\MikrotikException
+     * @throws MikrotikException
      *
      * @see https://wiki.mikrotik.com/wiki/Manual:API#Command_word  Command word format
      * @see https://wiki.mikrotik.com/wiki/Manual:API#Queries       Query syntax

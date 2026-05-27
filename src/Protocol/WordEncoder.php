@@ -34,10 +34,9 @@ class WordEncoder
      * Encode the length of a word into Mikrotik API binary format.
      *
      * @param  int  $length  The length of the word (number of bytes).
+     * @return string Binary-encoded length prefix.
      *
-     * @return string  Binary-encoded length prefix.
-     *
-     * @throws \InvalidArgumentException  If length is negative.
+     * @throws \InvalidArgumentException If length is negative.
      */
     public static function encodeLength(int $length): string
     {
@@ -55,7 +54,7 @@ class WordEncoder
             $length |= 0x8000;
 
             return chr(($length >> 8) & 0xFF)
-                 . chr($length & 0xFF);
+                 .chr($length & 0xFF);
         }
 
         if ($length < 0x200000) {
@@ -63,8 +62,8 @@ class WordEncoder
             $length |= 0xC00000;
 
             return chr(($length >> 16) & 0xFF)
-                 . chr(($length >> 8) & 0xFF)
-                 . chr($length & 0xFF);
+                 .chr(($length >> 8) & 0xFF)
+                 .chr($length & 0xFF);
         }
 
         if ($length < 0x10000000) {
@@ -72,28 +71,27 @@ class WordEncoder
             $length |= 0xE0000000;
 
             return chr(($length >> 24) & 0xFF)
-                 . chr(($length >> 16) & 0xFF)
-                 . chr(($length >> 8) & 0xFF)
-                 . chr($length & 0xFF);
+                 .chr(($length >> 16) & 0xFF)
+                 .chr(($length >> 8) & 0xFF)
+                 .chr($length & 0xFF);
         }
 
         // 5 bytes: 0xF0 prefix + 4 bytes of raw length
         return chr(0xF0)
-             . chr(($length >> 24) & 0xFF)
-             . chr(($length >> 16) & 0xFF)
-             . chr(($length >> 8) & 0xFF)
-             . chr($length & 0xFF);
+             .chr(($length >> 24) & 0xFF)
+             .chr(($length >> 16) & 0xFF)
+             .chr(($length >> 8) & 0xFF)
+             .chr($length & 0xFF);
     }
 
     /**
      * Encode a complete word: length prefix + word content.
      *
      * @param  string  $word  The word to encode (e.g. "/login", "=name=admin").
-     *
-     * @return string  Binary-encoded length prefix followed by the word itself.
+     * @return string Binary-encoded length prefix followed by the word itself.
      */
     public static function encodeWord(string $word): string
     {
-        return self::encodeLength(strlen($word)) . $word;
+        return self::encodeLength(strlen($word)).$word;
     }
 }

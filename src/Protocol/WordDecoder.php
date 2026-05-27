@@ -36,10 +36,9 @@ class WordDecoder
      * Read and decode the length prefix from a socket stream.
      *
      * @param  resource  $socket  An open socket resource (from stream_socket_client or fsockopen).
+     * @return int The decoded length (number of bytes to read for the word content).
      *
-     * @return int  The decoded length (number of bytes to read for the word content).
-     *
-     * @throws MikrotikException  If the socket read fails.
+     * @throws MikrotikException If the socket read fails.
      */
     public static function decodeLength($socket): int
     {
@@ -90,17 +89,16 @@ class WordDecoder
         }
 
         // 11111xxx — Control byte (reserved, not implemented by Mikrotik)
-        throw MikrotikException::fatal('Received unknown control byte: 0x' . dechex($firstByte));
+        throw MikrotikException::fatal('Received unknown control byte: 0x'.dechex($firstByte));
     }
 
     /**
      * Read a complete word from the socket (length-prefix + content).
      *
      * @param  resource  $socket  An open socket resource.
+     * @return string The decoded word content, or empty string if length is 0 (sentence terminator).
      *
-     * @return string  The decoded word content, or empty string if length is 0 (sentence terminator).
-     *
-     * @throws MikrotikException  If the socket read fails.
+     * @throws MikrotikException If the socket read fails.
      */
     public static function readWord($socket): string
     {
@@ -120,11 +118,10 @@ class WordDecoder
      * by looping until all bytes are received.
      *
      * @param  resource  $socket  An open socket resource.
-     * @param  int       $length  Number of bytes to read.
+     * @param  int  $length  Number of bytes to read.
+     * @return string The raw bytes read.
      *
-     * @return string  The raw bytes read.
-     *
-     * @throws MikrotikException  If the socket is closed or times out.
+     * @throws MikrotikException If the socket is closed or times out.
      *
      * @see routeros_api.class.php::read() (Mikhmon v3, lines 322-329)  Partial-read loop reference
      */
