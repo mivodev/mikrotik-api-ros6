@@ -1,0 +1,17 @@
+{
+    "name": "mivodev/mikrotik-api-ros6",
+    "description": "Mivo Enterprise Mikrotik API for RouterOS v6",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Mivo\\MikrotikRos6\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mivo\\MikrotikRos6\\MikrotikRos6ServiceProvider"
+            ]
+        }
+    }
+}
